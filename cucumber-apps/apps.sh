@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -x
 
 # funksjon som skriver ut hvordan bruk er
 function usage() {
