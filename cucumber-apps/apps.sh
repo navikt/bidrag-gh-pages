@@ -12,12 +12,12 @@ function checkoutNais() {
 
     if [[ $IS_POSSIBLE_API_CHANGE -eq 1 ]]; then
       echo "Using feature branch: $FEATURE_BRANCH"
-      git clone --depth 1 --branch="$FEATURE_BRANCH" "https://github.com/navikt/$NAIS_APP"
+      git clone --depth 1 --branch="$FEATURE_BRANCH" "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/navikt/$NAIS_APP"
     else
-      git clone --depth 1 "https://github.com/navikt/$NAIS_APP"
+      git clone --depth 1 "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/navikt/$NAIS_APP"
     fi
   else
-    git clone --depth 1 "https://github.com/navikt/$NAIS_APP"
+    git clone --depth 1 "https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@github.com/navikt/$NAIS_APP"
   fi
 }
 
