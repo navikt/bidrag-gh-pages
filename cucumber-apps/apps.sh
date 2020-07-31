@@ -1,9 +1,14 @@
 #!/bin/bash
 set -e
 
+# funksjon som skriver ut hvordan bruk er
+function usage() {
+  echo Navngi apps som json: apps.sh '{"apps":["github project","another github project","..."]}'
+}
+
 # fuksjon som henter ut et github prosjekt for en applikasjon (github prosjekt)
 function checkoutNais() {
-  NAIS_APP=$1
+  NAIS_APP=$(echo "$1" | sed 's/"//g')
 
   if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
     FEATURE_BRANCH=${GITHUB_REF#refs/heads/}
@@ -27,21 +32,20 @@ function checkoutNais() {
 # - input til skriptet er applikasjonsnavn (github prosjekt navn)
 #
 # Følgende skjer i dette skriptet:
-# 1) sjekker og setter input
+# 1) sjekker at vi har input argument
 # 2) sletter eventuell eksisterende mappe og lager ny mappe som brukes til å hente disse prosjektene
-# 3) for hvert applikasjonsnavn (github prosjekt)
+# 3) lagrer input som fil og parser denne som json med jq
+# 4) for hvert applikasjonsnavn (github prosjekt)
 #    - sjekker ut prosjektet
-# 4) setter mappa med <applikasjoner> (full filsti) som output
+# 5) setter mappa med <applikasjoner> (full filsti) som output
 #
 ############################################
 
-if [[ $# -eq 0 ]]; then
-  echo "Bruk: apps.sh <github project>...<another github project>"
+if [[ $# -ne 1 ]]; then
+  usage
   exit 1;
 fi
 
-# shellcheck disable=SC2124
-NAIS_APPS=$@
 
 if [[ -d nais-apps ]]; then
   sudo rm -rf nais-apps
@@ -49,6 +53,14 @@ fi
 
 mkdir nais-apps
 cd nais-apps || exit 1
+
+echo "$1" > json
+NAIS_APPS=$(jq '.apps[]' json)
+
+if [[ -z "$NAIS_APPS" ]]; then
+  usage
+  exit 1
+fi
 
 for app in $NAIS_APPS
 do
