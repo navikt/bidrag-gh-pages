@@ -19,7 +19,13 @@ module.exports =
 /******/ 		};
 /******/
 /******/ 		// Execute the module function
-/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 		var threw = true;
+/******/ 		try {
+/******/ 			modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/ 			threw = false;
+/******/ 		} finally {
+/******/ 			if(threw) delete installedModules[moduleId];
+/******/ 		}
 /******/
 /******/ 		// Flag the module as loaded
 /******/ 		module.l = true;
@@ -34,7 +40,7 @@ module.exports =
 /******/ 	// the startup function
 /******/ 	function startup() {
 /******/ 		// Load entry module and return exports
-/******/ 		return __webpack_require__(622);
+/******/ 		return __webpack_require__(808);
 /******/ 	};
 /******/
 /******/ 	// run startup
@@ -43,19 +49,27 @@ module.exports =
 /************************************************************************/
 /******/ ({
 
-/***/ 176:
-/***/ (function() {
+/***/ 275:
+/***/ (function(module) {
 
-eval("require")("@actions/exec");
+module.exports = eval("require")("@actions/core");
 
 
 /***/ }),
 
-/***/ 622:
+/***/ 772:
+/***/ (function(module) {
+
+module.exports = eval("require")("@actions/exec");
+
+
+/***/ }),
+
+/***/ 808:
 /***/ (function(__unusedmodule, __unusedexports, __webpack_require__) {
 
-const core = __webpack_require__(968);
-const exec = __webpack_require__(176);
+const core = __webpack_require__(275);
+const exec = __webpack_require__(772);
 
 async function run() {
   try {
@@ -71,14 +85,6 @@ async function run() {
 
 // noinspection JSIgnoredPromiseFromCall
 run();
-
-
-/***/ }),
-
-/***/ 968:
-/***/ (function() {
-
-eval("require")("@actions/core");
 
 
 /***/ })
