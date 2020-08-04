@@ -1,6 +1,8 @@
 # bidrag-gh-pages
 ![](https://github.com/navikt/bidrag-gh-pages/workflows/build%20actions/badge.svg)
 
+This repo is archived, since its content (with historry) is moved to bidrag-integration
+
 Actions dealing with github pages
 
 - cucumber-latest: hent antall ok/feilede teststeg fra cucumber.json
